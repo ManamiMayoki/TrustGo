@@ -1,0 +1,68 @@
+name: CI Pipeline - TrustGo
+
+on:
+  push:
+    branches: [ main, development ]
+  pull_request:
+    branches: [ main, development ]
+
+jobs:
+  lint-and-test:
+    name: Lint, Test & Validate
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:7.0
+        ports:
+          - 27017:27017
+      redis:
+        image: redis:7.2-alpine
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install Root & Workspace Dependencies
+        run: |
+          npm ci || npm install
+          cd server && (npm ci || npm install) && cd ..
+          cd client && (npm ci || npm install) && cd ..
+
+      - name: Run Backend Lint
+        run: |
+          cd server && npm run lint --if-present
+
+      - name: Run Frontend Lint
+        run: |
+          cd client && npm run lint --if-present
+
+      - name: Run Backend Unit & Integration Tests
+        env:
+          NODE_ENV: test
+          MONGODB_URI: mongodb://localhost:27017/trustgo_test_ci
+          JWT_ACCESS_SECRET: test_jwt_access_secret_ci_environment_32chars!
+          JWT_REFRESH_SECRET: test_jwt_refresh_secret_ci_environment_32chars!
+          COOKIE_SECRET: test_cookie_secret_ci_environment_32chars!
+        run: |
+          cd server && npm run test
+
+      - name: Build Frontend Application
+        run: |
+          cd client && npm run build
+
+      - name: Validate Docker Build (Server)
+        run: |
+          docker build -t trustgo-server:ci ./server
+
+      - name: Validate Docker Build (Client)
+        run: |
+          docker build -t trustgo-client:ci ./client

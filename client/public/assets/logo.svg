@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+  <!-- Outer Shield -->
+  <path d="M50 8L85 24V52C85 72.8 70.1 90.6 50 96C29.9 90.6 15 72.8 15 52V24L50 8Z" fill="#0B132B" stroke="url(#shieldGrad)" stroke-width="4" stroke-linejoin="round"/>
+  <!-- Inner Protection Emblem -->
+  <path d="M50 20L75 32V52C75 66.8 64.3 79.5 50 83.5C35.7 79.5 25 66.8 25 52V32L50 20Z" fill="#1C2541" opacity="0.6"/>
+  <!-- Connecting Global Arch -->
+  <path d="M32 50C32 40 40 32 50 32C60 32 68 40 68 50" stroke="url(#goldGrad)" stroke-width="3" stroke-linecap="round" stroke-dasharray="4 4"/>
+  <!-- Checkmark of Verified Rights -->
+  <path d="M40 52L47 59L62 44" stroke="#10B981" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,14 @@
+const ROLES = {
+  SUPER_ADMIN: 'SUPER_ADMIN',
+  ADMIN: 'ADMIN',
+  EMPLOYER: 'EMPLOYER',
+  WORKER: 'WORKER',
+  COMPLIANCE_OFFICER: 'COMPLIANCE_OFFICER',
+};
+
+const ALL_ROLES = Object.values(ROLES);
+
+module.exports = {
+  ROLES,
+  ALL_ROLES,
+};

@@ -1,0 +1,60 @@
+name: Automated Test Suite
+
+on:
+  push:
+    branches: [ main, development ]
+  pull_request:
+    branches: [ main, development ]
+
+jobs:
+  test-suite:
+    name: Unit, Integration & Security Tests
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:7.0
+        ports:
+          - 27017:27017
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: |
+          cd server && npm ci || npm install
+          cd ../client && npm ci || npm install
+
+      - name: Run Backend Security Tests
+        env:
+          NODE_ENV: test
+          MONGODB_URI: mongodb://localhost:27017/trustgo_security_test
+          JWT_ACCESS_SECRET: test_security_jwt_access_secret_32chars!
+          JWT_REFRESH_SECRET: test_security_jwt_refresh_secret_32chars!
+          COOKIE_SECRET: test_security_cookie_secret_key_32chars!
+        run: |
+          cd server && npm run test:security
+
+      - name: Run Backend Integration Tests
+        env:
+          NODE_ENV: test
+          MONGODB_URI: mongodb://localhost:27017/trustgo_integration_test
+          JWT_ACCESS_SECRET: test_security_jwt_access_secret_32chars!
+          JWT_REFRESH_SECRET: test_security_jwt_refresh_secret_32chars!
+          COOKIE_SECRET: test_security_cookie_secret_key_32chars!
+        run: |
+          cd server && npm run test:integration
+
+      - name: Upload Test Coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: server/coverage/
+          if-no-files-found: ignore

@@ -1,0 +1,29 @@
+{
+  "name": "trustgo-platform",
+  "version": "1.0.0",
+  "description": "TrustGo — Know Your Right: Ethical cross-border recruitment and migrant worker legal-compliance B2B SaaS platform",
+  "scripts": {
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "build": "cd client && npm run build",
+    "test": "npm run test --prefix server && npm run test --prefix client",
+    "test:server": "npm run test --prefix server",
+    "test:client": "npm run test --prefix client",
+    "test:security": "npm run test:security --prefix server",
+    "lint": "npm run lint --prefix server && npm run lint --prefix client"
+  },
+  "keywords": [
+    "ethical-recruitment",
+    "migrant-workers",
+    "legal-compliance",
+    "b2b-saas",
+    "escrow",
+    "esg",
+    "mern"
+  ],
+  "author": "TrustGo Team",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
